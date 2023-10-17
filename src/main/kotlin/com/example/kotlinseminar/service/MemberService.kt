@@ -27,11 +27,6 @@ class MemberService(
             val nickname: String
     )
 
-    @Transactional
-    fun deleteById(id: Long) : Unit {
-        memberRepository.deleteById(id)
-    }
-
     fun getById(id: Long) : MemberResponse {
         val member: Member = memberRepository.findById(id).orElseThrow { throw RuntimeException("Not Found") }
         return MemberResponse(
@@ -41,8 +36,14 @@ class MemberService(
         )
     }
 
+
     @Transactional
-    fun create(request: MemberController.MemberCreateRequest) : Unit {
+    fun deleteById(id: Long) {
+        memberRepository.deleteById(id)
+    }
+
+    @Transactional
+    fun create(request: MemberController.MemberCreateRequest) {
         val member = Member(
                 name = request.name,
                 nickname = request.nickname,
@@ -56,4 +57,5 @@ class MemberService(
         val member: Member = memberRepository.findById(memberId).orElseThrow { throw RuntimeException("Not Found") }
         member.age = request.age
     }
+
 }

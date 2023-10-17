@@ -2,6 +2,7 @@ package com.example.kotlinseminar.controller
 
 import com.example.kotlinseminar.service.MemberService
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -44,4 +45,10 @@ class MemberController(
     data class MemberUpdateRequest(
             val age: Int
     )
+
+    @DeleteMapping("/members/{memberId}")
+    fun deleteMemberById(@PathVariable memberId: Long) : ResponseEntity<Unit> {
+        memberService.deleteById(memberId)
+        return ResponseEntity.ok().build()
+    }
 }

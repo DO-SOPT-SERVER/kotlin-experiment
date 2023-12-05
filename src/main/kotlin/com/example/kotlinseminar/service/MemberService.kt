@@ -7,35 +7,32 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.stream.Collectors
 
-
 @Service
 @Transactional(readOnly = true)
 class MemberService(
-        private val memberRepository: MemberJpaRepository
+    private val memberRepository: MemberJpaRepository,
 ) {
-
-    fun getMembers() : List<MemberResponse> {
+    fun getMembers(): List<MemberResponse> {
         return memberRepository.findAll()
-                .stream()
-                .map { MemberResponse(it.id, it.name, it.nickname) }
-                .collect(Collectors.toList())
+            .stream()
+            .map { MemberResponse(it.id, it.name, it.nickname) }
+            .collect(Collectors.toList())
     }
 
     data class MemberResponse(
-            val id: Long?,
-            val name: String,
-            val nickname: String
+        val id: Long?,
+        val name: String,
+        val nickname: String,
     )
 
-    fun getById(id: Long) : MemberResponse {
+    fun getById(id: Long): MemberResponse {
         val member: Member = memberRepository.findById(id).orElseThrow { throw RuntimeException("Not Found") }
         return MemberResponse(
-                member.id!!,
-                member.name,
-                member.nickname
+            member.id!!,
+            member.name,
+            member.nickname,
         )
     }
-
 
     @Transactional
     fun deleteById(id: Long) {
@@ -44,18 +41,21 @@ class MemberService(
 
     @Transactional
     fun create(request: MemberController.MemberCreateRequest) {
-        val member = Member(
+        val member =
+            Member(
                 name = request.name,
                 nickname = request.nickname,
-                age = request.age
-        )
+                age = request.age,
+            )
         memberRepository.save(member)
     }
 
     @Transactional
-    fun update(request: MemberController.MemberUpdateRequest, memberId: Long) : Unit {
+    fun update(
+        request: MemberController.MemberUpdateRequest,
+        memberId: Long,
+    ) {
         val member: Member = memberRepository.findById(memberId).orElseThrow { throw RuntimeException("Not Found") }
         member.age = request.age
     }
-
 }

@@ -9,10 +9,10 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "member")
 class Member(
-        @Id @GeneratedValue
-        val id:Long? = null,
-        @Column(name = "name", columnDefinition = "varchar(255)", nullable = false)
-        val name: String,
-        var nickname: String,
-        var age: Int
+    @Id @GeneratedValue
+    val id: Long? = null,
+    @Column(name = "name", columnDefinition = "varchar(255)", nullable = false)
+    val name: String,
+    var nickname: String,
+    var age: Int,
 )
